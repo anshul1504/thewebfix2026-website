@@ -169,6 +169,13 @@ class Testimonial(OrderedModel):
         websites = [url.strip() for url in self.website_urls.splitlines() if url.strip()]
         return websites or ([self.website_url] if self.website_url else [])
 class FAQ(OrderedModel):
+    CATEGORY_CHOICES = [
+        ("general", "General"), ("website", "Website Development"),
+        ("seo", "SEO"), ("social", "Social Media"),
+        ("software", "Software & SaaS"), ("hosting", "Hosting & Support"),
+        ("commercial", "Pricing & Process"), ("policy", "Policies"),
+    ]
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="general")
     question = models.CharField(max_length=180)
     answer = models.TextField()
 

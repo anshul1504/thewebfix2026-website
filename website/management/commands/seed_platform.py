@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.utils.text import slugify
+from website.faq_content import FAQ_CONTENT
 from website.models import BlogPost, Brochure, CareerOpening, Client, ContentPage, FounderProfile, FAQ, Product, Project, Service, SiteSettings, SocialLink, Testimonial
 
 SERVICE_GROUPS = {
@@ -149,22 +150,12 @@ class Command(BaseCommand):
             testimonial.order = i
             testimonial.is_active = True
             testimonial.save()
-        professional_faqs = [
-            ("What services does The Webfix provide?", "We provide website design and development, SEO, digital marketing, social media management, paid advertising, custom software, SaaS, mobile applications, hosting and ongoing maintenance from one Indore-based team."),
-            ("How do you estimate a project budget?", "We estimate after understanding scope, integrations, content, design complexity, timeline and support needs. You receive a written scope with deliverables, milestones and investment before work begins."),
-            ("How long does a website or software project take?", "A focused business website may take a few weeks, while ecommerce, SaaS and custom software take longer. The confirmed proposal includes a realistic schedule based on scope and approval dependencies."),
-            ("Do you work only with businesses in Indore?", "No. We are based in Indore and work with businesses across India. Meetings, approvals and delivery can be managed remotely with clear milestones and regular updates."),
-            ("Will my website be SEO-friendly?", "Yes. Our builds cover crawlable structure, responsive layouts, performance fundamentals, metadata controls, semantic content and analytics readiness. Ongoing SEO is scoped separately when required."),
-            ("Who owns the website or software after completion?", "After all agreed invoices are paid, the client receives the ownership and usage rights described in the proposal. Licensed software, third-party assets and our pre-existing reusable components remain subject to their licences."),
-            ("Can you maintain an existing website or application?", "Yes. We first review the current technology, hosting, security and code quality. We then recommend a maintenance plan or a clearly scoped repair project."),
-            ("Do you provide domain, hosting and business email?", "Yes. We can arrange and manage domains, hosting, SSL, deployment and business email. Third-party fees and renewal responsibilities are stated clearly in the proposal."),
-            ("How are project payments structured?", "Payments are normally linked to project milestones or monthly service periods. The exact schedule, taxes and third-party costs are included in the quotation or service agreement."),
-            ("What happens after I submit an enquiry?", "A senior team member reviews your requirement and responds within one business day. We clarify the goal, recommend the right scope and share the next practical step without sales pressure."),
-            ("Can I cancel a project or recurring service?", "Yes, by written request and according to the accepted proposal. Completed work, committed resources and non-recoverable third-party costs remain payable. See our Cancellation and Refund Policy for details."),
-            ("How do you protect confidential business information?", "Access is limited to team members and providers required for delivery. We use secure accounts and practical data controls, and can sign a suitable confidentiality agreement when the project requires it."),
-        ]
-        for faq_order, (question, answer) in enumerate(professional_faqs, 1):
-            FAQ.objects.update_or_create(question=question, defaults={"answer": answer, "order": faq_order, "is_active": True})        CareerOpening.objects.update_or_create(title="Senior Django Engineer",defaults={"location":"Remote / India","employment_type":"Full-time","description":"Own robust Django products from domain modelling through deployment, collaborating closely with design and strategy.","order":1,"is_active":True})
+        desired_faqs = []
+        for faq_order, (category, question, answer) in enumerate(FAQ_CONTENT, 1):
+            desired_faqs.append(question)
+            FAQ.objects.update_or_create(question=question, defaults={"answer": answer, "category": category, "order": faq_order, "is_active": True})
+        FAQ.objects.exclude(question__in=desired_faqs).update(is_active=False)
+        CareerOpening.objects.update_or_create(title="Senior Django Engineer",defaults={"location":"Remote / India","employment_type":"Full-time","description":"Own robust Django products from domain modelling through deployment, collaborating closely with design and strategy.","order":1,"is_active":True})
         CareerOpening.objects.update_or_create(title="Product UI/UX Designer",defaults={"location":"Indore / Hybrid","employment_type":"Full-time","description":"Turn complex challenges into clear systems, polished interfaces and meaningful motion.","order":2,"is_active":True})
         now=timezone.now()
         for i,(title,category,excerpt) in enumerate(BLOGS):

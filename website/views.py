@@ -307,7 +307,10 @@ def blog_detail(request, slug):
 
 
 def faq(request):
-    return render(request, "website/pages/faq.html", shared() | {"faqs": FAQ.objects.filter(is_active=True)})
+    faqs = FAQ.objects.filter(is_active=True).order_by("category", "order")
+    active_categories = {item.category for item in faqs}
+    categories = [(key, label) for key, label in FAQ.CATEGORY_CHOICES if key in active_categories]
+    return render(request, "website/pages/faq.html", shared() | {"faqs": faqs, "faq_categories": categories})
 
 
 def careers(request):

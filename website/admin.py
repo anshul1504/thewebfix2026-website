@@ -77,7 +77,14 @@ class NewsletterAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "created_at")
 
 
-for model in (NavigationItem, Statistic, ProcessStep, Product, Project, Technology, Testimonial, FAQ, SocialLink, CareerOpening):
+@admin.register(FAQ)
+class FAQAdmin(OrderedAdmin):
+    list_display = ("question", "category", "order", "is_active")
+    list_filter = ("category", "is_active")
+    search_fields = ("question", "answer")
+
+
+for model in (NavigationItem, Statistic, ProcessStep, Product, Project, Technology, Testimonial, SocialLink, CareerOpening):
     admin.site.register(model, OrderedAdmin)
 
 admin.site.register(ContentPage)
