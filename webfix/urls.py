@@ -7,8 +7,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("website.urls")),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# The hosting account does not expose a separate media alias, so Django serves
+# these low-volume editorial assets while WhiteNoise handles collected static files.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = 'website.views.error_400'
 handler403 = 'website.views.error_403'

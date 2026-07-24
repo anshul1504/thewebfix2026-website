@@ -15,6 +15,14 @@ if env_file.exists():
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-change-before-deploy")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = [x.strip() for x in os.getenv("ALLOWED_HOSTS", "*").split(",")]
+CSRF_TRUSTED_ORIGINS = [
+    x.strip()
+    for x in os.getenv(
+        "CSRF_TRUSTED_ORIGINS",
+        "https://thewebfix.in,https://www.thewebfix.in",
+    ).split(",")
+    if x.strip()
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -65,14 +73,14 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Kolkata"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
