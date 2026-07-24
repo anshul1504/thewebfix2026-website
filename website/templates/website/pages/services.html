@@ -1,0 +1,56 @@
+{% extends "website/base.html" %}
+{% block title %}Digital Marketing, Website and Software Services in Indore | The Webfix{% endblock %}
+{% block description %}Explore digital marketing, SEO, website development, custom software, SaaS, mobile app, hosting and AI automation services from The Webfix in Indore.{% endblock %}
+{% block head %}<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"The Webfix digital and technology services","numberOfItems":{{ services|length }},"itemListElement":[{% for service in services %}{"@type":"ListItem","position":{{ forloop.counter }},"url":"{{ request.scheme }}://{{ request.get_host }}{% url 'service_detail' service.slug %}","name":"{{ service.title|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]}</script>{% endblock %}
+{% block content %}
+<section class="services-page-hero" id="top">
+  <div class="container services-page-hero__grid">
+    <div>
+      <p class="eyebrow reveal">Digital marketing and technology services in Indore</p>
+      <h1 class="split">One team for growth, web and software.</h1>
+      <p class="services-page-lede reveal">The Webfix helps businesses attract customers, build stronger digital experiences and run better operations through connected strategy, design and technology.</p>
+      <div class="services-page-actions reveal"><a class="button button--accent" href="{% url 'contact' %}?service=consultation">Discuss your requirement <span>&#8599;</span></a><a class="text-link" href="#service-catalogue">Explore services <span>&#8595;</span></a></div>
+    </div>
+    <aside class="services-page-summary" aria-label="The Webfix service coverage">
+      <span><b>{{ services|length }}</b><small>Specialist services</small></span>
+      <span><b>{{ service_groups|length }}</b><small>Connected capabilities</small></span>
+      <span><b>1</b><small>Accountable delivery team</small></span>
+      <p>Choose one focused service or combine capabilities around a larger business goal.</p>
+    </aside>
+  </div>
+</section>
+
+<nav class="service-jump-nav" aria-label="Service categories"><div class="container">{% for group in service_groups %}<a href="#{{ group.slug }}"><i class="fa-solid {{ group.icon }}"></i>{{ group.title }}<span>{{ group.count }}</span></a>{% endfor %}</div></nav>
+
+<section class="service-catalogue" id="service-catalogue">
+  {% for group in service_groups %}<section class="service-group section" id="{{ group.slug }}">
+    <div class="container">
+      <header class="service-group__head"><div><p class="eyebrow">{{ forloop.counter|stringformat:'02d' }} / Capability</p><h2>{{ group.title }}</h2></div><p>{{ group.description }}</p></header>
+      <div class="service-group__featured">
+        {% for service in group.featured %}<a class="service-offer" href="{% url 'service_detail' service.slug %}">
+          <div class="service-offer__top"><span class="service-offer__icon">{% if 'fa-brands' in service.icon %}<i class="{{ service.icon }}"></i>{% else %}<i class="fa-solid {{ service.icon }}"></i>{% endif %}</span><small>{{ forloop.counter|stringformat:'02d' }}</small></div>
+          <h3>{{ service.title }}</h3><p>{{ service.description }}</p>
+          <ul>{% for tag in service.tag_list|slice:':3' %}<li>{{ tag }}</li>{% endfor %}</ul>
+          <b>Explore service <i class="fa-solid fa-arrow-right"></i></b>
+        </a>{% endfor %}
+      </div>
+      {% if group.more %}<div class="service-group__more"><span>Specialist support</span><div>{% for service in group.more %}<a href="{% url 'service_detail' service.slug %}">{% if 'fa-brands' in service.icon %}<i class="{{ service.icon }}"></i>{% else %}<i class="fa-solid {{ service.icon }}"></i>{% endif %}{{ service.title }} <i class="fa-solid fa-arrow-up-right"></i></a>{% endfor %}</div></div>{% endif %}
+    </div>
+  </section>{% endfor %}
+</section>
+
+<section class="service-goals section">
+  <div class="container"><div class="section-head"><div><p class="eyebrow">Start with the outcome</p><h2>Not sure which service you need?</h2></div></div>
+    <div class="service-goal-grid">
+      <a href="#growth"><i class="fa-solid fa-bullseye"></i><div><h3>I need more leads</h3><p>SEO, content, social media and paid campaigns.</p></div><span>&#8599;</span></a>
+      <a href="#web"><i class="fa-solid fa-laptop-code"></i><div><h3>I need a better website</h3><p>Strategy, UX, design, development and conversion.</p></div><span>&#8599;</span></a>
+      <a href="#software"><i class="fa-solid fa-gears"></i><div><h3>I need custom software</h3><p>SaaS, ERP, CRM, portals and workflow automation.</p></div><span>&#8599;</span></a>
+      <a href="#cloud"><i class="fa-solid fa-shield-halved"></i><div><h3>I need reliable support</h3><p>Hosting, maintenance, cloud and security.</p></div><span>&#8599;</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="service-delivery section"><div class="container"><div class="service-delivery__intro"><p class="eyebrow">How engagement works</p><h2>Clear scope. Visible progress. Dependable delivery.</h2><p>Every engagement starts with the business problem and ends with a measurable next step.</p></div><div class="service-delivery__steps"><article><b>01</b><h3>Understand</h3><p>Goals, users, current challenges and success measures.</p></article><article><b>02</b><h3>Plan</h3><p>Recommended scope, delivery stages, timeline and cost.</p></article><article><b>03</b><h3>Create</h3><p>Design, campaigns or engineering delivered in clear milestones.</p></article><article><b>04</b><h3>Improve</h3><p>Launch support, measurement and focused optimisation.</p></article></div></div></section>
+
+<section class="services-page-cta"><div class="container"><div><p class="eyebrow">Work with The Webfix</p><h2>Tell us what the business needs to achieve.</h2><p>Our Indore team will recommend the right service mix, scope and practical next step.</p></div><a class="button button--accent" href="{% url 'contact' %}?service=consultation">Book free consultation <span>&#8599;</span></a></div></section>
+{% endblock %}
