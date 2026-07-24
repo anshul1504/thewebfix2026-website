@@ -98,7 +98,7 @@ def home(request):
         inquiry = context["form"].save()
         notify_inquiry(inquiry, context["site"])
         messages.success(request, "Your brief is in. We will respond within one business day.")
-        return redirect(f"{reverse('home')}#contact")
+        return redirect(f"{reverse('home')}?submitted=1#contact")
     return render(request, "website/home.html", context)
 
 
@@ -368,7 +368,7 @@ def contact(request):
         inquiry = form.save()
         notify_inquiry(inquiry, shared()["site"])
         messages.success(request, "Thank you. A senior consultant will contact you within one business day.")
-        return redirect("contact")
+        return redirect(f"{reverse('contact')}?submitted=1#project-brief")
     return render(request, "website/pages/contact.html", shared() | {"page": page, "form": form, "faqs": FAQ.objects.filter(is_active=True)[:5]})
 
 

@@ -94,7 +94,7 @@ class PlatformTests(TestCase):
             "website": "",
         }
         response = self.client.post(reverse("home"), payload, secure=True)
-        self.assertRedirects(response, reverse("home") + "#contact", fetch_redirect_response=False)
+        self.assertRedirects(response, reverse("home") + "?submitted=1#contact", fetch_redirect_response=False)
         self.assertEqual(Inquiry.objects.filter(email="asha@example.com").count(), 1)
         self.assertEqual(len(mail.outbox), 2)
 

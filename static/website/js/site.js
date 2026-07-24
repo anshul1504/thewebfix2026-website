@@ -95,7 +95,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = q(".nav"), progress = q(".scroll-progress");
   addEventListener("scroll",()=>{nav?.classList.toggle("scrolled",scrollY>30);if(progress)progress.style.transform=`scaleX(${scrollY/(document.documentElement.scrollHeight-innerHeight)})`},{passive:true});
   qa('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{const target=q(a.getAttribute("href"));if(target){e.preventDefault();target.scrollIntoView({behavior:reduce?"auto":"smooth"})}}));
-  qa(".career-apply-link").forEach(link=>link.addEventListener("click",()=>{const role=q("#id_opening"),form=q("#application");if(role&&link.dataset.careerRole){role.value=link.dataset.careerRole;role.dispatchEvent(new Event("change",{bubbles:true}))}if(form)setTimeout(()=>{form.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});setTimeout(()=>role?.focus({preventScroll:true}),reduce?0:650)},20)}));
+  qa(".career-apply-link").forEach(link=>link.addEventListener("click",()=>{const role=q("#id_opening"),form=q("#application");if(role&&link.dataset.careerRole){role.value=link.dataset.careerRole;role.dispatchEvent(new Event("change",{bubbles:true}))}if(form)setTimeout(()=>{form.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});setTimeout(()=>role?.focus({preventScroll:true}),reduce?0:650)},20)}));  const formState=new URLSearchParams(location.search),formTarget=formState.has("applied")?q("#application"):formState.has("submitted")?(q("#project-brief")||q("#contact")):q(".form-errors,.career-form-errors,.errorlist")?.closest("form")?.closest("section");
+  if(formTarget){
+    if("scrollRestoration" in history)history.scrollRestoration="manual";
+    const showFormFeedback=()=>{formTarget.scrollIntoView({behavior:"auto",block:"start"});const feedback=formTarget.querySelector(".form-success,.career-form-message,.form-errors,.career-form-errors,.errorlist");if(feedback){feedback.setAttribute("tabindex","-1");feedback.focus({preventScroll:true})}};
+    setTimeout(showFormFeedback,reduce?80:1850);setTimeout(showFormFeedback,2450);
+  }
   qa(".accordion__item button").forEach(btn=>btn.addEventListener("click",()=>{
     const item=btn.parentElement, body=item.querySelector(".accordion__body"), active=item.classList.toggle("active");
     btn.setAttribute("aria-expanded",active); body.style.height=active?body.scrollHeight+"px":"0px";
