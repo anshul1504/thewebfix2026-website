@@ -106,7 +106,30 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.setAttribute("aria-expanded",active); body.style.height=active?body.scrollHeight+"px":"0px";
   }));
 if(window.Swiper)new Swiper(".quote-slider",{loop:true,speed:650,spaceBetween:16,slidesPerView:1,autoplay:{delay:5200,disableOnInteraction:false,pauseOnMouseEnter:true},observer:true,observeParents:true,navigation:{nextEl:".quote-next",prevEl:".quote-prev"},pagination:{el:".swiper-pagination",clickable:true},breakpoints:{720:{slidesPerView:2},1100:{slidesPerView:3}}});
-  q(".menu-toggle")?.addEventListener("click",()=>{const open=nav.classList.toggle("menu-open");q(".menu-toggle").setAttribute("aria-expanded",open)});
+  const menuToggle=q(".menu-toggle"),primaryNav=q("#primary-navigation");
+  let menuScrollY=0;
+  const setMenuOpen=open=>{
+    if(!nav||!menuToggle)return;
+    if(open){
+      menuScrollY=window.scrollY;
+      nav.classList.add("menu-open");
+      document.body.classList.add("menu-active");
+      document.body.style.top=`-${menuScrollY}px`;
+    }else{
+      nav.scrollTop=0;
+      nav.classList.remove("menu-open");
+      document.body.classList.remove("menu-active");
+      document.body.style.removeProperty("top");
+      window.scrollTo(0,menuScrollY);
+      requestAnimationFrame(()=>window.scrollTo(0,menuScrollY));
+    }
+    menuToggle.setAttribute("aria-expanded",String(open));
+    menuToggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu");
+  };
+  menuToggle?.addEventListener("click",()=>setMenuOpen(!nav.classList.contains("menu-open")));
+  primaryNav?.addEventListener("click",event=>{if(event.target.closest("a"))setMenuOpen(false)});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&nav?.classList.contains("menu-open")){setMenuOpen(false);menuToggle?.focus()}});
+  addEventListener("resize",()=>{if(innerWidth>1050&&nav?.classList.contains("menu-open"))setMenuOpen(false)},{passive:true});
   qa(".industry-filter button").forEach(button=>button.addEventListener("click",()=>{qa(".industry-filter button").forEach(x=>x.classList.remove("active"));button.classList.add("active");const key=button.dataset.industry;qa(".client-grid article").forEach(card=>{card.hidden=key!=="all"&&card.dataset.industry!==key})}));
   const portfolioCards=qa("[data-portfolio-category]");
   if(portfolioCards.length){

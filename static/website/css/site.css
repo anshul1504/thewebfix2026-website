@@ -430,3 +430,40 @@ section[id]{scroll-margin-top:110px}
 @media(max-width:600px){.faq-category-filter{margin-right:-20px;padding-right:20px;padding-bottom:28px}}
 /* Form submission feedback */
 .form-success,.career-form-message--success{position:relative;border:1px solid rgba(37,211,102,.42)!important;border-left:4px solid #25d366!important;background:rgba(37,211,102,.09)!important;color:#e9fff0!important;padding:16px 17px!important;font-size:14px!important;line-height:1.55!important;box-shadow:0 12px 35px rgba(0,0,0,.18)}.form-success i,.career-form-message--success i{color:#25d366!important;margin-right:8px}.form-success:focus,.career-form-message:focus{outline:2px solid #d4af37;outline-offset:4px}#contact,#project-brief,#application{scroll-margin-top:105px}
+/* Full-viewport mobile navigation */
+body.menu-active{position:fixed;width:100%;overflow:hidden}
+.menu-toggle{position:relative;z-index:2002;width:44px;height:44px;padding:10px;align-items:center;justify-content:center;flex-direction:column;gap:5px;color:#f5f2ea;cursor:pointer}
+.menu-toggle span{display:block;width:23px;height:2px;flex:none;border-radius:2px;background:currentColor;transform-origin:center;transition:transform .28s ease,opacity .18s ease}
+@media(max-width:1050px){
+  .nav .menu-toggle{display:flex}
+  .nav.menu-open,.inner-page .nav.menu-open{position:fixed!important;inset:0!important;z-index:2000!important;width:100%!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;padding:0 20px!important;display:block!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;background:#090806!important;transform:none!important}
+  .nav.menu-open .logo{position:fixed;z-index:2002;top:10px;left:20px;height:54px;margin:0}
+  .nav.menu-open .button--small{display:none!important}
+  .nav.menu-open nav{position:relative!important;inset:auto!important;display:flex!important;width:100%!important;min-height:100dvh!important;margin:0!important;padding:86px 0 28px!important;flex-direction:column!important;gap:0!important;overflow:visible!important}
+  .nav.menu-open nav a{display:flex!important;align-items:center;width:100%;min-height:57px;padding:12px 2px;border-bottom:1px solid rgba(255,255,255,.11);font:600 21px/1.2 var(--heading)!important;color:#f5f2ea!important;letter-spacing:0!important;opacity:1!important;transform:none!important}
+  .nav.menu-open nav a.active{color:#d4af37!important}
+  .nav.menu-open nav a:after{display:none!important}
+  .nav.menu-open .menu-toggle{position:fixed;top:12px;right:18px;margin:0}
+  .nav.menu-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav.menu-open .menu-toggle span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .nav.menu-open .menu-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
+@media(max-width:420px){.nav.menu-open,.inner-page .nav.menu-open{padding-inline:16px!important}.nav.menu-open .logo{left:16px}.nav.menu-open nav a{min-height:54px;font-size:19px!important}}
+@media(prefers-reduced-motion:reduce){.menu-toggle span{transition:none}}
+/* Deterministic hamburger and close icon geometry */
+.menu-toggle{display:none!important;position:relative!important;gap:0!important;padding:0!important}
+.menu-toggle span{position:absolute!important;left:10px!important;width:24px!important;height:2px!important;margin:0!important;border-radius:2px!important;background:#f5f2ea!important;transform:none!important;transform-origin:50% 50%!important}
+.menu-toggle span:nth-child(1){top:14px!important}.menu-toggle span:nth-child(2){top:21px!important}.menu-toggle span:nth-child(3){top:28px!important}
+@media(max-width:1050px){
+ .nav .menu-toggle{display:block!important}
+ .nav.menu-open .menu-toggle span{top:21px!important}
+ .nav.menu-open .menu-toggle span:nth-child(1){transform:rotate(45deg)!important}
+ .nav.menu-open .menu-toggle span:nth-child(2){opacity:0!important;transform:scaleX(0)!important}
+ .nav.menu-open .menu-toggle span:nth-child(3){transform:rotate(-45deg)!important}
+}
+/* Pin the mobile close control to the viewport header */
+@media(max-width:1050px){
+ .nav.menu-open>.menu-toggle,.inner-page .nav.menu-open>.menu-toggle{position:fixed!important;z-index:2100!important;top:13px!important;right:16px!important;bottom:auto!important;left:auto!important;width:44px!important;height:44px!important;margin:0!important;transform:none!important}
+}
+/* Prevent header travel when the mobile overlay closes */
+@media(max-width:1050px){.nav,.inner-page .nav{transition:background-color .2s ease,border-color .2s ease!important}.nav.menu-open{animation:none!important}}
